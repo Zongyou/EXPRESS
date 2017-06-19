@@ -1,0 +1,42 @@
+<%- include('header') %>
+<div class="ui grid">
+    <div class="four wide column">
+        <a class="avatar"
+           href="/posts?author=<%= user._id %>"
+           data-title="<%= user.name %> | <%= ({m: '男', f: '女', x: '保密'})[user.gender] %>"
+           data-content="<%= user.bio %>">
+            <img class="avatar" src="/img/<%= user.avatar %>">
+        </a>
+    </div>
+
+    <div class="eight wide column">
+        <form class="ui form segment" method="post" action="/posts">
+            <div class="field required">
+                <label>标题</label>
+                <input type="text" name="title">
+            </div>
+            <div class="field required">
+                <label>内容</label>
+                <textarea id="text" oninput="this.editor.update()" name="content" style="font-size: 15px" rows="18">Type **Markdown** here.</textarea>
+            </div>
+            <input type="submit" class="ui button" value="发布">
+
+    </div>
+    </form>
+    <div id="mark" style="background-color: white;position: absolute;left: 1050px;height: 500px;width: 440px;top: 160px;font-size: 15px" ></div>
+</div>
+
+<script src="/js/markdown.js"></script>
+<script type="text/javascript">
+    function Editor(input, preview) {
+        this.update = function () {
+            preview.innerHTML = markdown.toHTML(input.value);
+        };
+        input.editor = this;
+        this.update();
+    }
+    var a = function (id) { return document.getElementById(id); };
+    new Editor(a("text"), a("mark"));
+</script>
+
+<%- include('footer') %>
